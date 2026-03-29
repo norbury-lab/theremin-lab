@@ -1,0 +1,12 @@
+title: テルミン・ラボ
+description: テルミンに関する研究・DIY・資料アーカイブ
+url: "https://nobury-lab.github.io"
+baseurl: "/theremin-lab"
+
+theme: just-the-docs
+
+lang: ja
+
+aux_links:
+  "GitHub":
+    - "https://github.com/nobury-lab/theremin-lab"
