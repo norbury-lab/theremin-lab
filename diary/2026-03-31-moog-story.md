@@ -38,6 +38,8 @@ Callout：
 
 ---
 
+<img src="assets/images/leon-theremin.jpg" alt="説明" style="max-width:100%; height:auto; margin-bottom:1rem;">
+
 2023年6月、Moog Musicがinusicに買収された。
 
 inMusicはロードアイランド州に本社を置くコングロマリットで、Akai、Alesis、M-Audio、Numark、Denon DJなどを傘下に持つ。いわゆる「楽器業界のPE（プライベートエクイティ）」的な存在だ。
