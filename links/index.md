@@ -51,31 +51,23 @@ nav_order: 55
 ---
 
 ## 動画・演奏
-
-- <a href="https://www.youtube.com/watch?v=pSzTPGlNa5U" target="_blank">Clara Rockmore — The Swan（サン＝サーンス）</a>  
-  テルミン演奏の最高峰とされるClara Rockmoreの演奏。サン＝サーンスの「白鳥」。
-
-- <a href="https://www.youtube.com/watch?v=ZVue-QsxuzA" target="_blank">Grégoire Blanc & Orane Donnadieu — Clair de Lune（Claravox Centennial）</a>  
-  Moog Claravox Centennialを使ったドビュッシー「月の光」。2人のデュオ演奏。
-
-  ### Clara Rockmore — The Swan（サン＝サーンス）
-
-<iframe width="560" height="315" 
-src="https://www.youtube.com/embed/pSzTPGlNa5U" 
-frameborder="0" allowfullscreen></iframe>
+### Clara Rockmore — The Swan（サン＝サーンス）
+テルミン演奏の最高峰とされるClara Rockmoreの演奏。サン＝サーンスの「白鳥」。
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/pSzTPGlNa5U" 
+    frameborder="0" allowfullscreen>
+  </iframe>
+</div>
 
 ### Grégoire Blanc & Orane Donnadieu — Clair de Lune（Claravox Centennial）
+Moog Claravox Centennialを使ったドビュッシー「月の光」。2人のデュオ演奏。
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/ZVue-QsxuzA" 
+    frameborder="0" allowfullscreen>
+  </iframe>
+</div>
 
-<iframe width="560" height="315" 
-src="https://www.youtube.com/embed/ZVue-QsxuzA" 
-frameborder="0" allowfullscreen></iframe>
-
-<a href="https://www.youtube.com/watch?v=pSzTPGlNa5U" target="_blank">
-  <img src="https://img.youtube.com/vi/pSzTPGlNa5U/0.jpg" 
-       alt="Clara Rockmore — The Swan" width="320">
-</a>
-
-<a href="https://www.youtube.com/watch?v=ZVue-QsxuzA" target="_blank">
-  <img src="https://img.youtube.com/vi/ZVue-QsxuzA/0.jpg" 
-       alt="Clair de Lune — Claravox Centennial" width="320">
-</a>
