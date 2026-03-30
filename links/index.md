@@ -70,7 +70,7 @@ frameborder="0" allowfullscreen></iframe>
 src="https://www.youtube.com/embed/ZVue-QsxuzA" 
 frameborder="0" allowfullscreen></iframe>
 
-a href="https://www.youtube.com/watch?v=pSzTPGlNa5U" target="_blank">
+<a href="https://www.youtube.com/watch?v=pSzTPGlNa5U" target="_blank">
   <img src="https://img.youtube.com/vi/pSzTPGlNa5U/0.jpg" 
        alt="Clara Rockmore — The Swan" width="320">
 </a>
