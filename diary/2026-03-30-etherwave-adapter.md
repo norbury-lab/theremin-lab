@@ -4,6 +4,7 @@ layout: default
 parent: 日記
 nav_order: 9990
 ---
+
 <!-- 
 ## マークアップ参照
 
@@ -19,6 +20,18 @@ nav_order: 9990
 番号なしリスト：- 項目
 番号付きリスト：1. 項目
 テーブル：| 項目 | 値 |
+
+Callout：
+{: .note }
+> メモ・補足情報
+
+{: .warning }
+> 注意事項
+
+{: .important }
+> 重要ポイント
+
+色：grey-lt / grey-dk / purple / blue / green / yellow / red
 -->
 
 # Etherwaveのアダプターが変わっていた
