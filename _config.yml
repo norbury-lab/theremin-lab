@@ -5,6 +5,8 @@ baseurl: "/theremin-lab"
 
 theme: just-the-docs
 
+color_scheme: dark
+
 lang: ja
 
 nav_fold: false
