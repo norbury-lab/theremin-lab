@@ -10,3 +10,11 @@ lang: ja
 aux_links:
   "GitHub":
     - "https://github.com/nobury-lab/theremin-lab"
+
+callouts:
+  note:
+    title: メモ
+  warning:
+    title: 注意
+  important:
+    title: 重要
