@@ -1,7 +1,7 @@
 ---
 title: テルミンとは
 layout: default
-parent: モデル・カタログ
+parent: はじめに
 nav_order: 1
 ---
 

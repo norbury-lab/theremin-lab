@@ -1,7 +1,7 @@
 ---
 title: 歴史
 layout: default
-parent: モデル・カタログ
+parent: はじめに
 nav_order: 2
 ---
 
