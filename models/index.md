@@ -1,7 +1,7 @@
 ---
 title: モデル・カタログ
 layout: default
-nav_order: 30
+nav_order: 7
 has_children: true
 ---
 

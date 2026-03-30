@@ -89,3 +89,16 @@ nav_order: 55
 Moog Claravox Centennialを使ったドビュッシー「月の光」。2人のデュオ演奏。
 
 ---
+
+### Bob Moog Theremin Demo & Performance - ExperimentalSynth
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/watch?v=opt6F4myTbg" 
+    frameborder="0" allowfullscreen>
+  </iframe>
+</div>
+Bob Moog のデモンストレーション。91Cを演奏しています。
+
+---
