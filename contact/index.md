@@ -16,7 +16,7 @@ nav_order: 100
       style="width:100%; max-width:500px; padding:.5rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;">
   </div>
   <div style="margin-bottom: 1rem;">
-    <label for="email" style="display:block; margin-bottom:.3rem; font-weight:bold;">メールアドレス（返信希望の場合）</label>
+    <label for="email" style="display:block; margin-bottom:.3rem; font-weight:bold;">メールアドレス</label>
     <input type="email" id="email" name="email"
       style="width:100%; max-width:500px; padding:.5rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;">
   </div>
