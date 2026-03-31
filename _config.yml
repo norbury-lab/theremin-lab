@@ -32,5 +32,5 @@ callouts:
   model:
     color: grey-dk
 
-favicon_ico: "/theremin-lab/assets/images/favicofavicon-32x32.png"
+favicon_ico: "/theremin-lab/assets/images/favicon-32x32.png"
 footer_content: "© 2026- theremin-lab / norbury"
