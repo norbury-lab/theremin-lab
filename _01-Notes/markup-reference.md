@@ -40,7 +40,6 @@ has_children: true
 ---
 
 ## Markdown 基本
-
 ```markdown
 # 見出し1（ページタイトル用・1つだけ）
 ## 見出し2
@@ -86,10 +85,21 @@ has_children: true
 <img src="../assets/images/ファイル名.jpg" alt="説明" style="max-width:100%; height:auto;">
 ```
 
-### 別ウィンドウで開くリンク
+### 外部リンクを別タブで開く（サイト全体に適用）
+
+`_includes/head_custom.html` を作成し、以下を記述する。
 ```html
-<a href="URL" target="_blank">リンクテキスト</a>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    });
+  });
+</script>
 ```
+
+JSが無効な環境では同タブで開くだけで実害なし。
 
 ### YouTube埋め込み
 ```html
@@ -112,7 +122,6 @@ has_children: true
 ---
 
 ## Just the Docs：Callout
-
 ```markdown
 {: .note }
 > メモ・補足情報
@@ -141,7 +150,6 @@ has_children: true
 ---
 
 ## Just the Docs：Label（バッジ）
-
 ```markdown
 [未完成](#){: .label .label-yellow }
 [工事中](#){: .label .label-red }
@@ -152,12 +160,25 @@ has_children: true
 ---
 
 ## テーブル
-
 ```markdown
 | 項目 | 値 | 備考 |
 |------|-----|------|
 | 内容 | 内容 | 内容 |
 ```
+
+---
+
+## 参考リンクの書式
+```markdown
+- サイト名: [*記事タイトル（英語）*](URL)（日本語訳）日付
+```
+
+例：
+```markdown
+- BPR: [*Three months after InMusic acquisition, Moog cuts jobs*](https://www.bpr.org/bpr-news/2023-09-25/three-months-after-inmusic-acquisition-moog-cuts-jobs)（inMusic買収から3ヶ月、Moogが人員削減）2023年9月25日
+```
+
+外部リンクの別タブ化はJavaScriptで一括対応するため、個別に `target="_blank"` は不要。
 
 ---
 
@@ -214,4 +235,4 @@ has_children: true
 
 ---
 
-*最終更新：2026年3月*
+*最終更新：2026年4月*
