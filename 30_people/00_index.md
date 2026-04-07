@@ -1,4 +1,4 @@
-markdown---
+---
 title: 人物
 layout: default
 nav_order: 30

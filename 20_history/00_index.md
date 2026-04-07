@@ -1,4 +1,4 @@
-markdown---
+---
 title: 歴史
 layout: default
 nav_order: 20
