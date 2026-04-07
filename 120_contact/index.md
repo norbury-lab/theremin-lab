@@ -1,7 +1,7 @@
 ---
 title: お問い合わせ
 layout: default
-nav_order: 100
+nav_order: 120
 ---
 
 # お問い合わせ
