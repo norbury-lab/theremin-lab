@@ -6,3 +6,46 @@ blockquote {
   color: inherit;
 }
 
+// 脚注
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 2px solid #aaa;
+  font-size: 0.85rem;
+
+  ol {
+    list-style-type: decimal !important;
+  }
+
+  ol li {
+    display: list-item !important;
+    list-style-type: decimal !important;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background-color: #fff8f0;
+    border-left: 3px solid #e06c00;
+    border-radius: 2px;
+  }
+
+  ol li::marker {
+    color: #e06c00;
+    font-weight: bold;
+  }
+
+  // 本文中の脚注番号
+  sup a {
+    color: #e06c00;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // 戻るリンク
+  a[href^="#fnref:"] {
+    color: #aaa;
+    font-size: 0.8rem;
+  }
+}
