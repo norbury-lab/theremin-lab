@@ -6,6 +6,12 @@ blockquote {
   color: inherit;
 }
 
+// 訳注番号の二重表示を解消
+.footnotes ol li::before {
+  content: none !important;
+  display: none !important;
+}
+
 // 訳注番号を表示する
 .footnotes ol {
   list-style: decimal !important;
