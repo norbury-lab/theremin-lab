@@ -22,3 +22,8 @@ blockquote {
   background-color: #e8f0fe;
   transition: background-color 0.3s ease;
 }
+
+// 本文中の脚注番号を大きく
+sup a[href^="#fn:"] {
+  font-size: 0.85rem;
+}
