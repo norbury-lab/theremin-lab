@@ -16,3 +16,9 @@ blockquote {
   display: list-item !important;
   list-style: decimal outside !important;
 }
+
+// ジャンプ先の訳注をハイライト
+.footnotes ol li:target {
+  background-color: #fff3cd;
+  transition: background-color 0.3s ease;
+}
