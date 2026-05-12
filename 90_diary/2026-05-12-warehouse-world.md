@@ -9,6 +9,11 @@ nav_order: 9960
 
 2026年5月12日
 
+---
+
+<img src="../assets/images/warehouse_of_the_world.jpg" alt="世界の倉庫" style="max-width:100%; height:auto; margin-bottom:1rem;">
+
+
 Amazonで注文したものが翌日に届く。  
 スマートフォンは安く、高性能になり続ける。  
 EVも太陽光パネルも、いまや「環境技術」として語られる。
