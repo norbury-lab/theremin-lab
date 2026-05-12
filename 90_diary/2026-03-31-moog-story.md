@@ -1,5 +1,5 @@
 ---
-title: 2026/3 Moogが買収された話(2026/3/31)
+title: Moogが買収された話(2026/3/31)
 layout: default
 parent: 日記
 nav_order: 9980
