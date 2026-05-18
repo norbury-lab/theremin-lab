@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coil Calculator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --panel: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #c8a84b;
+    --accent-dim: #8a6f2e;
+    --text: #e8e0d0;
+    --text-dim: #888;
+    --green: #4caf7d;
+    --red: #e05555;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+
+  .container { max-width: 560px; margin: 0 auto; }
+
+  .header { margin-bottom: 32px; }
+  .header .sub {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .header .formula {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .mode-toggle {
+    display: flex;
+    gap: 2px;
+    background: var(--panel);
+    border-radius: 6px;
+    padding: 3px;
+    margin-bottom: 28px;
+  }
+  .mode-btn {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    font-family: 'Share Tech Mono', monospace;
+    transition: all 0.15s;
+  }
+  .mode-btn.active {
+    background: var(--accent);
+    color: #0f0f0f;
+    font-weight: bold;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .panel.result-panel {
+    border-color: #c8a84b33;
+  }
+  .panel-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .field input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--accent);
+    padding: 8px 12px;
+    font-size: 18px;
+    font-family: 'Share Tech Mono', monospace;
+    width: 120px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus {
+    border-color: var(--accent-dim);
+  }
+  .field .unit {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-row:last-of-type { border-bottom: none; }
+  .result-label {
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .result-value {
+    font-size: 18px;
+    color: var(--text);
+  }
+  .result-value.highlight {
+    font-size: 24px;
+    color: var(--green);
+    font-weight: bold;
+  }
+  .result-value .unit-small {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .machine-settings {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 2;
+  }
+  .machine-settings span {
+    color: var(--accent);
+  }
+
+  .note {
+    margin-top: 16px;
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="sub">Wheeler Formula · Single Layer Air Core</div>
+    <h1>COIL CALCULATOR</h1>
+    <div class="formula">L = r²N² / (9r + 10l) &nbsp;·&nbsp; r,l in inches</div>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('reverse')">L → N（設計）</button>
+    <button class="mode-btn" onclick="setMode('forward')">N → L（検算）</button>
+  </div>
+
+  <!-- 共通パラメーター -->
+  <div class="panel">
+    <div class="panel-title">共通パラメーター</div>
+    <div class="input-grid">
+      <div class="field">
+        <label>巻き芯 直径</label>
+        <div class="field-row">
+          <input type="number" id="dia" value="40" step="0.1" min="1" oninput="calc()">
+          <span class="unit">mm</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>ワイヤー径</label>
+        <div class="field-row">
+          <input type="number" id="wire" value="0.30" step="0.01" min="0.01" oninput="calc()">
+          <span class="unit">mm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 設計モード入力 -->
+  <div class="panel" id="panel-reverse">
+    <div class="panel-title">目標インダクタンス</div>
+    <div class="field">
+      <label>目標 L</label>
+      <div class="field-row">
+        <input type="number" id="targetL" value="1000" step="10" min="1" oninput="calc()">
+        <span class="unit">μH</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 検算モード入力 -->
+  <div class="panel hidden" id="panel-forward">
+    <div class="panel-title">巻き回数</div>
+    <div class="field">
+      <label>巻き回数 N</label>
+      <div class="field-row">
+        <input type="number" id="turns" value="237" step="1" min="1" oninput="calc()">
+        <span class="unit">turns</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="panel result-panel">
+    <div class="panel-title">計算結果</div>
+
+    <!-- 設計モード結果 -->
+    <div id="result-reverse">
+      <div class="result-row">
+        <span class="result-label">巻き回数</span>
+        <span class="result-value highlight" id="res-turns">— <span class="unit-small">turns</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">巻き幅</span>
+        <span class="result-value" id="res-width">— <span class="unit-small">mm</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">検算 L</span>
+        <span class="result-value" id="res-lcheck">— <span class="unit-small">μH</span></span>
+      </div>
+      <div class="machine-settings">
+        巻き機設定：<br>
+        Single Layer Wraps = <span id="ms-slw">—</span><br>
+        Axis Width = <span id="ms-axis">—</span> mm
+      </div>
+    </div>
+
+    <!-- 検算モード結果 -->
+    <div id="result-forward" class="hidden">
+      <div class="result-row">
+        <span class="result-label">インダクタンス</span>
+        <span class="result-value highlight" id="res-L">— <span class="unit-small">μH</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">巻き幅</span>
+        <span class="result-value" id="res-width2">— <span class="unit-small">mm</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">mH換算</span>
+        <span class="result-value" id="res-mH">— <span class="unit-small">mH</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    ※ Wheeler公式は単層エアコアの近似式。実測値との差異は試巻きで補正すること。<br>
+    ※ 巻き幅 = N × ワイヤー径（密巻き前提）
+  </div>
+</div>
+
+<script>
+let mode = 'reverse';
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && m === 'reverse') || (i === 1 && m === 'forward'));
+  });
+  document.getElementById('panel-reverse').classList.toggle('hidden', m !== 'reverse');
+  document.getElementById('panel-forward').classList.toggle('hidden', m !== 'forward');
+  document.getElementById('result-reverse').classList.toggle('hidden', m !== 'reverse');
+  document.getElementById('result-forward').classList.toggle('hidden', m !== 'forward');
+  calc();
+}
+
+function wheeler(dia_mm, N, wire_mm) {
+  const r = (dia_mm / 2) / 25.4;
+  const l = (N * wire_mm) / 25.4;
+  return (r * r * N * N) / (9 * r + 10 * l);
+}
+
+function solve(dia_mm, wire_mm, target_uH) {
+  const r = (dia_mm / 2) / 25.4;
+  const w = wire_mm / 25.4;
+  const a = r * r;
+  const b = -10 * w * target_uH;
+  const c = -9 * r * target_uH;
+  const disc = b * b - 4 * a * c;
+  if (disc < 0) return null;
+  return (-b + Math.sqrt(disc)) / (2 * a);
+}
+
+function calc() {
+  const dia = parseFloat(document.getElementById('dia').value);
+  const wire = parseFloat(document.getElementById('wire').value);
+
+  if (mode === 'reverse') {
+    const targetL = parseFloat(document.getElementById('targetL').value);
+    if (!dia || !wire || !targetL) return;
+    const N = solve(dia, wire, targetL);
+    if (!N) return;
+    const Nint = Math.round(N);
+    const width = (Nint * wire).toFixed(1);
+    const Lcheck = wheeler(dia, Nint, wire).toFixed(0);
+    document.getElementById('res-turns').innerHTML = `${Nint} <span class="unit-small">turns</span>`;
+    document.getElementById('res-width').innerHTML = `${width} <span class="unit-small">mm</span>`;
+    document.getElementById('res-lcheck').innerHTML = `${Lcheck} <span class="unit-small">μH</span>`;
+    document.getElementById('ms-slw').textContent = Nint;
+    document.getElementById('ms-axis').textContent = width;
+  } else {
+    const N = parseFloat(document.getElementById('turns').value);
+    if (!dia || !wire || !N) return;
+    const L = wheeler(dia, N, wire);
+    const width = (N * wire).toFixed(1);
+    document.getElementById('res-L').innerHTML = `${L.toFixed(1)} <span class="unit-small">μH</span>`;
+    document.getElementById('res-width2').innerHTML = `${width} <span class="unit-small">mm</span>`;
+    document.getElementById('res-mH').innerHTML = `${(L / 1000).toFixed(4)} <span class="unit-small">mH</span>`;
+  }
+}
+
+calc();
+</script>
+</body>
+</html>
