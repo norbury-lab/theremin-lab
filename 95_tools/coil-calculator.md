@@ -12,4 +12,4 @@ Wheeler公式による単層エアコイルの設計・検算ツールです。
 
 ---
 
-<iframe src="coil-calculator.html" width="100%" height="700px" frameborder="0" style="border:none;"></iframe>
+<iframe src="https://norbury-lab.github.io/theremin-lab/95_tools/coil-calculator.html" width="100%" height="900px" frameborder="0" style="border:none; display:block;"></iframe>
