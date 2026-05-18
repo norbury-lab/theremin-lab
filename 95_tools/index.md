@@ -1,5 +1,6 @@
 ---
 title: 計算ツール
+layout: default
 nav_order: 95
 has_children: true
 ---

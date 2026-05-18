@@ -1,5 +1,6 @@
 ---
 title: コイル計算ツール
+layout: default
 parent: 計算ツール
 nav_order: 10
 ---
