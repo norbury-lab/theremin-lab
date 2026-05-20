@@ -202,6 +202,13 @@
           <span class="unit">mm</span>
         </div>
       </div>
+      <div class="field">
+        <label>周波数（Q計算用）</label>
+        <div class="field-row">
+          <input type="number" id="freq" value="170" step="1" min="1" oninput="calc()">
+          <span class="unit">kHz</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -246,6 +253,18 @@
         <span class="result-label">検算 L</span>
         <span class="result-value" id="res-lcheck">— <span class="unit-small">μH</span></span>
       </div>
+      <div class="result-row">
+        <span class="result-label">ワイヤー長</span>
+        <span class="result-value" id="res-wirelen">— <span class="unit-small">m</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">DCR（直流抵抗）</span>
+        <span class="result-value" id="res-dcr">— <span class="unit-small">Ω</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Q値</span>
+        <span class="result-value" id="res-q">—</span>
+      </div>
       <div class="machine-box">
         巻き機設定：<br>
         Single Layer Wraps = <strong id="ms-slw">—</strong><br>
@@ -265,6 +284,18 @@
       <div class="result-row">
         <span class="result-label">mH換算</span>
         <span class="result-value" id="res-mH">— <span class="unit-small">mH</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">ワイヤー長</span>
+        <span class="result-value" id="res-wirelen2">— <span class="unit-small">m</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">DCR（直流抵抗）</span>
+        <span class="result-value" id="res-dcr2">— <span class="unit-small">Ω</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Q値</span>
+        <span class="result-value" id="res-q2">—</span>
       </div>
     </div>
   </div>
@@ -308,9 +339,25 @@ function solve(dia_mm, wire_mm, target_uH) {
   return (-b + Math.sqrt(disc)) / (2 * a);
 }
 
+function wireLength(dia_mm, N) {
+  return (N * Math.PI * dia_mm) / 1000; // メートル
+}
+
+function dcr(length_m, wire_mm) {
+  const area = Math.PI * Math.pow(wire_mm / 2, 2); // mm²
+  return (0.0175 * length_m) / area; // Ω
+}
+
+function calcQ(L_uH, dcr_ohm, freq_kHz) {
+  const omega = 2 * Math.PI * freq_kHz * 1000;
+  const XL = omega * L_uH * 1e-6;
+  return XL / dcr_ohm;
+}
+
 function calc() {
   const dia = parseFloat(document.getElementById('dia').value);
   const wire = parseFloat(document.getElementById('wire').value);
+  const freq = parseFloat(document.getElementById('freq').value);
 
   if (mode === 'reverse') {
     const targetL = parseFloat(document.getElementById('targetL').value);
@@ -320,9 +367,15 @@ function calc() {
     const Nint = Math.round(N);
     const width = (Nint * wire).toFixed(1);
     const Lcheck = wheeler(dia, Nint, wire).toFixed(0);
+    const wlen = wireLength(dia, Nint);
+    const resistance = dcr(wlen, wire);
+    const q = calcQ(parseFloat(Lcheck), resistance, freq);
     document.getElementById('res-turns').innerHTML = `${Nint} <span class="unit-small">turns</span>`;
     document.getElementById('res-width').innerHTML = `${width} <span class="unit-small">mm</span>`;
     document.getElementById('res-lcheck').innerHTML = `${Lcheck} <span class="unit-small">μH</span>`;
+    document.getElementById('res-wirelen').innerHTML = `${wlen.toFixed(2)} <span class="unit-small">m</span>`;
+    document.getElementById('res-dcr').innerHTML = `${resistance.toFixed(2)} <span class="unit-small">Ω</span>`;
+    document.getElementById('res-q').textContent = q.toFixed(1);
     document.getElementById('ms-slw').textContent = Nint;
     document.getElementById('ms-axis').textContent = width;
   } else {
@@ -330,9 +383,15 @@ function calc() {
     if (!dia || !wire || !N) return;
     const L = wheeler(dia, N, wire);
     const width = (N * wire).toFixed(1);
+    const wlen = wireLength(dia, N);
+    const resistance = dcr(wlen, wire);
+    const q = calcQ(L, resistance, freq);
     document.getElementById('res-L').innerHTML = `${L.toFixed(1)} <span class="unit-small">μH</span>`;
     document.getElementById('res-width2').innerHTML = `${width} <span class="unit-small">mm</span>`;
     document.getElementById('res-mH').innerHTML = `${(L / 1000).toFixed(4)} <span class="unit-small">mH</span>`;
+    document.getElementById('res-wirelen2').innerHTML = `${wlen.toFixed(2)} <span class="unit-small">m</span>`;
+    document.getElementById('res-dcr2').innerHTML = `${resistance.toFixed(2)} <span class="unit-small">Ω</span>`;
+    document.getElementById('res-q2').textContent = q.toFixed(1);
   }
 }
 
