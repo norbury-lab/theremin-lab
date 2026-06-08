@@ -1,27 +1,35 @@
 .theremin-logo-wrap {
-  width: 9em;
+  width: 7.2em;
   aspect-ratio: 1 / 1;
 
-  border: 1px solid #777;
+  border: 1px solid currentColor;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  margin: 1.5rem auto;
+  margin: 1.5rem auto 1rem auto;
 }
 
 .theremin-logo {
-  font-size: 1.7rem;
-  line-height: 1.1;
-  font-weight: 700;
+  transform: translateX(-0.35em);
+
+  font-family:
+    "Noto Serif JP",
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-weight: 300;   /* Light */
+
+  font-size: 1.45rem;
+  line-height: 1.08;
 }
 
 .theremin-logo-text {
-  width: 6em;
+  width: 5.8em;
   text-align: right;
 }
-
 figure {
   margin: 1.5rem 0;
 }
