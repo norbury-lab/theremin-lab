@@ -4,12 +4,15 @@
   line-height: 1.1;
   font-weight: 700;
 
-  margin: 1.5rem 0 1rem 0;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+
+  margin-left: -1rem;   /* ← 全体位置 */
 }
 
 .theremin-logo-text {
   width: 6em;
-  text-align: right;
+  text-align: right;    /* ← 右揃え */
 }
 
 figure {
