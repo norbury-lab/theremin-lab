@@ -4,15 +4,15 @@
 }
 
 .site-title::after {
-  content: "|⁾⁾⁾  て\A    るみ\A  んらぼ";
+  content: "|⁾⁾⁾  て\A  るみ\Aんらぼ";
   white-space: pre;
   display: block;
 
-  margin-top: 0.6rem;
+  margin-top: 1.5rem;
 
   font-family: monospace;
-  font-size: 0.95rem;
-  line-height: 1.0;
+  font-size: 1.4rem;
+  line-height: 1.1;
   font-weight: 700;
 }
 
