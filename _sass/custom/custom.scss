@@ -1,20 +1,16 @@
-.theremin-logo {
-  white-space: pre;
-  font-family: monospace;
-  font-size: 1.05rem;
-  line-height: 1.0;
-  font-weight: 700;
-  margin: 0.6rem 0 1rem 0;
+.site-title {
+  display: block !important;
 }
 
 .site-title::after {
-  content: "|⁾⁾⁾ て\A　るみ\A　んらぼ";
+  content: "|⁾⁾⁾ て\A　るみ\A  んらぼ";
   white-space: pre;
   display: block;
 
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
+
   font-family: monospace;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   line-height: 1.0;
   font-weight: 700;
 }
