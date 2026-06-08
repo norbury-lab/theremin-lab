@@ -11,8 +11,14 @@
 }
 
 .theremin-logo {
-  font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
-  font-weight: 300;
+  font-family:
+    "Noto Serif JP",
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "MS Mincho",
+    serif;
+
+  font-weight: 400;
   font-size: 26px;
   line-height: 1.1;
 }
@@ -24,7 +30,7 @@
 }
 
 .logo-top {
-  text-indent: -2em;   /* アンテナだけ左へ逃がす */
+  letter-spacing: -0.05em;   /* 必要なら微調整 */
 }
 
 .site-title {
