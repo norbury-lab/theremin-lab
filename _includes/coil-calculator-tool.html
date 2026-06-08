@@ -166,9 +166,21 @@
 <div class="coil-tool">
   <div class="formula">Wheeler式：L = r²N² / (9r + 10l)　単層エアコア近似</div>
 
-  <div class="flow">
-    推奨手順：① L→Nで設計 → ② 実際に巻く → ③ 巻線補正で実効外径を求める → ④ 実効外径をL→Nの「被覆込み外径」へ戻して再設計
-  </div>
+ <div class="flow">
+  <strong>推奨手順</strong><br><br>
+
+  ① L→N（設計）でコイルを設計
+  <br>↓<br>
+
+  ② 実際に巻線する
+  <br>↓<br>
+
+  ③ 巻線補正で実効外径を求める
+  <br>↓<br>
+
+  ④ 実効外径を<br>
+  L→N（設計）の「被覆込み外径」へ入力して再設計
+</div>
 
   <div class="mode-toggle" role="tablist" aria-label="計算モード">
     <button type="button" class="mode-btn active" onclick="setCoilMode('reverse')">L → N（設計）</button>
