@@ -1,155 +1,141 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>コイル計算ツール</title>
-<link rel="icon" href="/theremin-lab/assets/images/favicon.ico">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #fff;
+  .coil-tool * { box-sizing: border-box; }
+  .coil-tool {
+    max-width: 680px;
     color: #27262b;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    padding: 8px;
   }
-
-  .container { max-width: 560px; }
-
-  h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #27262b;
-    margin-bottom: 4px;
-  }
-
-  .formula {
+  .coil-tool .formula {
     font-size: 13px;
-    color: #959396;
-    margin-bottom: 24px;
+    color: #777;
+    margin-bottom: 16px;
     font-family: monospace;
   }
-
-  .mode-toggle {
+  .coil-tool .flow {
+    background: #f5f6fa;
+    border: 1px solid #eeebee;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #5c5962;
+  }
+  .coil-tool .mode-toggle {
     display: flex;
-    gap: 0;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     border: 1px solid #eeebee;
     border-radius: 4px;
     overflow: hidden;
   }
-  .mode-btn {
+  .coil-tool .mode-btn {
     flex: 1;
-    padding: 8px 0;
+    padding: 8px 4px;
     border: none;
     cursor: pointer;
     background: #f5f6fa;
-    color: #959396;
-    font-size: 14px;
-    font-family: inherit;
-    transition: all 0.15s;
+    color: #777;
+    font-size: 13px;
   }
-  .mode-btn.active {
+  .coil-tool .mode-btn.active {
     background: #7253ed;
     color: #fff;
     font-weight: 600;
   }
-
-  .section {
+  .coil-tool .section,
+  .coil-tool .result-section {
     background: #f5f6fa;
     border: 1px solid #eeebee;
     border-radius: 6px;
-    padding: 20px;
+    padding: 18px;
     margin-bottom: 16px;
   }
-
-  .section-title {
+  .coil-tool .result-section {
+    background: #fff;
+    border: 2px solid #7253ed;
+  }
+  .coil-tool .section-title {
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #959396;
+    color: #777;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
-
-  .input-grid {
+  .coil-tool .help {
+    font-size: 13px;
+    color: #5c5962;
+    margin-bottom: 14px;
+  }
+  .coil-tool .input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
   }
-
-  .field label {
+  .coil-tool .field label {
     display: block;
     font-size: 13px;
     color: #5c5962;
     margin-bottom: 6px;
     font-weight: 600;
   }
-  .field-row {
+  .coil-tool .field-row {
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .field input {
+  .coil-tool input {
     background: #fff;
-    border: 1px solid #eeebee;
+    border: 1px solid #ddd;
     border-radius: 4px;
     color: #27262b;
     padding: 7px 10px;
     font-size: 16px;
     font-family: monospace;
-    width: 110px;
-    outline: none;
-    transition: border-color 0.15s;
+    width: 120px;
   }
-  .field input:focus {
-    border-color: #7253ed;
+  .coil-tool input:focus {
+    outline: 2px solid #7253ed;
+    outline-offset: 1px;
   }
-  .field .unit {
-    color: #959396;
-    font-size: 13px;
+  .coil-tool .unit,
+  .coil-tool .unit-small {
+    color: #777;
+    font-size: 12px;
   }
-
-  .result-section {
-    background: #fff;
-    border: 2px solid #7253ed;
-    border-radius: 6px;
-    padding: 20px;
-    margin-bottom: 16px;
+  .coil-tool .result-row {
+    padding: 10px 0;
+    border-bottom: 1px solid #eeebee;
   }
-
-  .result-row {
+  .coil-tool .result-row:last-child { border-bottom: none; }
+  .coil-tool .result-top {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 8px 0;
-    border-bottom: 1px solid #eeebee;
+    gap: 12px;
   }
-  .result-row:last-of-type { border-bottom: none; }
-
-  .result-label {
+  .coil-tool .result-label {
     font-size: 13px;
     color: #5c5962;
   }
-  .result-value {
+  .coil-tool .result-value {
     font-size: 16px;
     font-family: monospace;
     color: #27262b;
+    text-align: right;
   }
-  .result-value.highlight {
+  .coil-tool .result-value.highlight {
     font-size: 22px;
     color: #7253ed;
     font-weight: 700;
   }
-  .unit-small {
+  .coil-tool .calc-line {
+    margin-top: 3px;
     font-size: 12px;
-    color: #959396;
+    color: #777;
+    font-family: monospace;
   }
-
-  .machine-box {
+  .coil-tool .machine-box {
     margin-top: 16px;
     background: #f5f6fa;
     border: 1px solid #eeebee;
@@ -160,112 +146,179 @@
     line-height: 2;
     font-family: monospace;
   }
-  .machine-box strong {
-    color: #7253ed;
-  }
-
-  .note {
+  .coil-tool .machine-box strong { color: #7253ed; }
+  .coil-tool .note {
     font-size: 12px;
-    color: #959396;
+    color: #777;
     line-height: 1.8;
     margin-top: 8px;
   }
+  .coil-tool .hidden { display: none; }
 
-  .hidden { display: none; }
+  @media (max-width: 560px) {
+    .coil-tool .input-grid { grid-template-columns: 1fr; }
+    .coil-tool .mode-toggle { flex-direction: column; }
+    .coil-tool input { width: 100%; }
+    .coil-tool .field-row { align-items: stretch; }
+  }
 </style>
-</head>
-<body>
-<div class="container">
 
-  <h2>コイル計算ツール</h2>
+<div class="coil-tool">
   <div class="formula">Wheeler式：L = r²N² / (9r + 10l)　単層エアコア近似</div>
 
-  <div class="mode-toggle">
-    <button class="mode-btn active" onclick="setMode('reverse')">L → N（設計）</button>
-    <button class="mode-btn" onclick="setMode('forward')">N → L（検算）</button>
+  <div class="flow">
+    推奨手順：① L→Nで設計 → ② 実際に巻く → ③ 巻線補正で実効外径を求める → ④ 実効外径をL→Nの「被覆込み外径」へ戻して再設計
   </div>
 
-  <!-- 共通パラメーター -->
-  <div class="section">
+  <div class="mode-toggle" role="tablist" aria-label="計算モード">
+    <button type="button" class="mode-btn active" onclick="setCoilMode('reverse')">L → N（設計）</button>
+    <button type="button" class="mode-btn" onclick="setCoilMode('forward')">N → L（検算）</button>
+    <button type="button" class="mode-btn" onclick="setCoilMode('calibration')">巻線補正</button>
+  </div>
+
+  <div class="section" id="common-section">
     <div class="section-title">共通パラメーター</div>
+    <div class="help">
+      導体径はDCR計算に使用します。被覆込み外径は巻き幅計算に使用します。UEW線では、初回は「導体径 + 0.03〜0.05mm」程度を目安にしてください。
+    </div>
     <div class="input-grid">
       <div class="field">
-        <label>巻き芯 直径</label>
+        <label for="coil-dia">巻き芯 直径</label>
         <div class="field-row">
-          <input type="number" id="dia" value="40" step="0.1" min="1" oninput="calc()">
+          <input type="number" id="coil-dia" value="40" step="0.1" min="1" oninput="calcCoil()">
           <span class="unit">mm</span>
         </div>
       </div>
+
       <div class="field">
-        <label>ワイヤー径</label>
+        <label for="coil-conductor">導体径（公称・DCR用）</label>
         <div class="field-row">
-          <input type="number" id="wire" value="0.30" step="0.01" min="0.01" oninput="calc()">
+          <input type="number" id="coil-conductor" value="0.30" step="0.01" min="0.01" oninput="calcCoil()">
           <span class="unit">mm</span>
         </div>
       </div>
+
       <div class="field">
-        <label>周波数（Q計算用）</label>
+        <label for="coil-outer">被覆込み外径（巻き幅用）</label>
         <div class="field-row">
-          <input type="number" id="freq" value="170" step="1" min="1" oninput="calc()">
+          <input type="number" id="coil-outer" value="0.33" step="0.01" min="0.01" oninput="calcCoil()">
+          <span class="unit">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="coil-freq">周波数（Q計算用）</label>
+        <div class="field-row">
+          <input type="number" id="coil-freq" value="170" step="1" min="1" oninput="calcCoil()">
           <span class="unit">kHz</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 設計モード入力 -->
   <div class="section" id="panel-reverse">
-    <div class="section-title">目標インダクタンス</div>
+    <div class="section-title">L → N（設計）</div>
+    <div class="help">
+      目標インダクタンスから必要巻数を求めます。計算された巻き回数と巻き幅を巻線機へ入力します。
+    </div>
     <div class="field">
-      <label>目標 L</label>
+      <label for="coil-targetL">目標 L</label>
       <div class="field-row">
-        <input type="number" id="targetL" value="1000" step="10" min="1" oninput="calc()">
+        <input type="number" id="coil-targetL" value="1000" step="10" min="1" oninput="calcCoil()">
         <span class="unit">μH</span>
       </div>
     </div>
   </div>
 
-  <!-- 検算モード入力 -->
   <div class="section hidden" id="panel-forward">
-    <div class="section-title">巻き回数</div>
+    <div class="section-title">N → L（検算）</div>
+    <div class="help">
+      実際の巻数からWheeler式による予測インダクタンスを求めます。LCRメーター実測値との比較に使います。
+    </div>
     <div class="field">
-      <label>巻き回数 N</label>
+      <label for="coil-turns">巻き回数 N</label>
       <div class="field-row">
-        <input type="number" id="turns" value="237" step="1" min="1" oninput="calc()">
+        <input type="number" id="coil-turns" value="237" step="1" min="1" oninput="calcCoil()">
         <span class="unit">turns</span>
       </div>
     </div>
   </div>
 
-  <!-- 結果 -->
+  <div class="section hidden" id="panel-calibration">
+    <div class="section-title">巻線補正</div>
+    <div class="help">
+      実測巻き幅から実効外径を逆算します。求めた値をL→N（設計）の「被覆込み外径」へ戻すと、次回から巻き幅予測が近づきます。
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label for="cal-turns">巻き回数 N</label>
+        <div class="field-row">
+          <input type="number" id="cal-turns" value="238" step="1" min="1" oninput="calcCoil()">
+          <span class="unit">turns</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="cal-width">実測巻き幅</label>
+        <div class="field-row">
+          <input type="number" id="cal-width" value="81.4" step="0.1" min="0.1" oninput="calcCoil()">
+          <span class="unit">mm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="result-section">
     <div class="section-title">計算結果</div>
 
     <div id="result-reverse">
       <div class="result-row">
-        <span class="result-label">巻き回数</span>
-        <span class="result-value highlight" id="res-turns">— <span class="unit-small">turns</span></span>
+        <div class="result-top">
+          <span class="result-label">巻き回数</span>
+          <span class="result-value highlight" id="res-turns">—</span>
+        </div>
+        <div class="calc-line" id="calc-turns">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">巻き幅</span>
-        <span class="result-value" id="res-width">— <span class="unit-small">mm</span></span>
+        <div class="result-top">
+          <span class="result-label">巻き幅</span>
+          <span class="result-value" id="res-width">—</span>
+        </div>
+        <div class="calc-line" id="calc-width">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">検算 L</span>
-        <span class="result-value" id="res-lcheck">— <span class="unit-small">μH</span></span>
+        <div class="result-top">
+          <span class="result-label">Wheeler検算 L</span>
+          <span class="result-value" id="res-lcheck">—</span>
+        </div>
+        <div class="calc-line" id="calc-lcheck">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">ワイヤー長</span>
-        <span class="result-value" id="res-wirelen">— <span class="unit-small">m</span></span>
+        <div class="result-top">
+          <span class="result-label">ワイヤー長</span>
+          <span class="result-value" id="res-wirelen">—</span>
+        </div>
+        <div class="calc-line" id="calc-wirelen">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">DCR（直流抵抗）</span>
-        <span class="result-value" id="res-dcr">— <span class="unit-small">Ω</span></span>
+        <div class="result-top">
+          <span class="result-label">DCR（直流抵抗）</span>
+          <span class="result-value" id="res-dcr">—</span>
+        </div>
+        <div class="calc-line" id="calc-dcr">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">Q値</span>
-        <span class="result-value" id="res-q">—</span>
+        <div class="result-top">
+          <span class="result-label">Q値</span>
+          <span class="result-value" id="res-q">—</span>
+        </div>
+        <div class="calc-line" id="calc-q">—</div>
       </div>
+
       <div class="machine-box">
         巻き機設定：<br>
         Single Layer Wraps = <strong id="ms-slw">—</strong><br>
@@ -275,64 +328,122 @@
 
     <div id="result-forward" class="hidden">
       <div class="result-row">
-        <span class="result-label">インダクタンス</span>
-        <span class="result-value highlight" id="res-L">— <span class="unit-small">μH</span></span>
+        <div class="result-top">
+          <span class="result-label">インダクタンス</span>
+          <span class="result-value highlight" id="res-L">—</span>
+        </div>
+        <div class="calc-line" id="calc-L">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">巻き幅</span>
-        <span class="result-value" id="res-width2">— <span class="unit-small">mm</span></span>
+        <div class="result-top">
+          <span class="result-label">巻き幅</span>
+          <span class="result-value" id="res-width2">—</span>
+        </div>
+        <div class="calc-line" id="calc-width2">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">mH換算</span>
-        <span class="result-value" id="res-mH">— <span class="unit-small">mH</span></span>
+        <div class="result-top">
+          <span class="result-label">mH換算</span>
+          <span class="result-value" id="res-mH">—</span>
+        </div>
+        <div class="calc-line" id="calc-mH">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">ワイヤー長</span>
-        <span class="result-value" id="res-wirelen2">— <span class="unit-small">m</span></span>
+        <div class="result-top">
+          <span class="result-label">ワイヤー長</span>
+          <span class="result-value" id="res-wirelen2">—</span>
+        </div>
+        <div class="calc-line" id="calc-wirelen2">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">DCR（直流抵抗）</span>
-        <span class="result-value" id="res-dcr2">— <span class="unit-small">Ω</span></span>
+        <div class="result-top">
+          <span class="result-label">DCR（直流抵抗）</span>
+          <span class="result-value" id="res-dcr2">—</span>
+        </div>
+        <div class="calc-line" id="calc-dcr2">—</div>
       </div>
+
       <div class="result-row">
-        <span class="result-label">Q値</span>
-        <span class="result-value" id="res-q2">—</span>
+        <div class="result-top">
+          <span class="result-label">Q値</span>
+          <span class="result-value" id="res-q2">—</span>
+        </div>
+        <div class="calc-line" id="calc-q2">—</div>
+      </div>
+
+      <div class="machine-box">
+        巻き機設定：<br>
+        Single Layer Wraps = <strong id="ms-slw2">—</strong><br>
+        Axis Width = <strong id="ms-axis2">—</strong> mm
+      </div>
+    </div>
+
+    <div id="result-calibration" class="hidden">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">実効外径</span>
+          <span class="result-value highlight" id="res-effective-dia">—</span>
+        </div>
+        <div class="calc-line" id="calc-effective-dia">—</div>
+      </div>
+
+      <div class="machine-box">
+        次回設計では、L → N（設計）タブの<br>
+        被覆込み外径 = <strong id="next-outer">—</strong> mm<br>
+        として入力してください。
       </div>
     </div>
   </div>
 
   <div class="note">
-    ※ Wheeler公式は単層エアコアの近似式。実測値との差異は試巻きで補正すること。<br>
-    ※ 巻き幅 = N × ワイヤー径（密巻き前提）<br>
-    ※ DCR・Q値は理論計算値です。実際の値は使用するワイヤーの種類・巻き方・温度などにより異なります。参考値としてご使用ください。
+    ※ Wheeler公式は単層エアコアの近似式です。実測値との差異は、試巻きとLCRメーター測定で補正してください。<br>
+    ※ 巻き幅 = N × 被覆込み外径（密巻き前提）です。<br>
+    ※ DCRは導体径から計算します。被覆込み外径ではありません。<br>
+    ※ DCR・Q値は理論値です。実際の値はワイヤー材質・巻き方・温度などにより異なります。
   </div>
-
 </div>
 
 <script>
-let mode = 'reverse';
+let coilMode = 'reverse';
 
-function setMode(m) {
-  mode = m;
-  document.querySelectorAll('.mode-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && m === 'reverse') || (i === 1 && m === 'forward'));
+function setCoilMode(m) {
+  coilMode = m;
+
+  document.querySelectorAll('.coil-tool .mode-btn').forEach((b, i) => {
+    b.classList.toggle(
+      'active',
+      (i === 0 && m === 'reverse') ||
+      (i === 1 && m === 'forward') ||
+      (i === 2 && m === 'calibration')
+    );
   });
+
+  document.getElementById('common-section').classList.toggle('hidden', m === 'calibration');
+
   document.getElementById('panel-reverse').classList.toggle('hidden', m !== 'reverse');
   document.getElementById('panel-forward').classList.toggle('hidden', m !== 'forward');
+  document.getElementById('panel-calibration').classList.toggle('hidden', m !== 'calibration');
+
   document.getElementById('result-reverse').classList.toggle('hidden', m !== 'reverse');
   document.getElementById('result-forward').classList.toggle('hidden', m !== 'forward');
-  calc();
+  document.getElementById('result-calibration').classList.toggle('hidden', m !== 'calibration');
+
+  calcCoil();
 }
 
-function wheeler(dia_mm, N, wire_mm) {
+function wheeler(dia_mm, N, outer_mm) {
   const r = (dia_mm / 2) / 25.4;
-  const l = (N * wire_mm) / 25.4;
+  const l = (N * outer_mm) / 25.4;
   return (r * r * N * N) / (9 * r + 10 * l);
 }
 
-function solve(dia_mm, wire_mm, target_uH) {
+function solveTurns(dia_mm, outer_mm, target_uH) {
   const r = (dia_mm / 2) / 25.4;
-  const w = wire_mm / 25.4;
+  const w = outer_mm / 25.4;
   const a = r * r;
   const b = -10 * w * target_uH;
   const c = -9 * r * target_uH;
@@ -342,12 +453,12 @@ function solve(dia_mm, wire_mm, target_uH) {
 }
 
 function wireLength(dia_mm, N) {
-  return (N * Math.PI * dia_mm) / 1000; // メートル
+  return (N * Math.PI * dia_mm) / 1000;
 }
 
-function dcr(length_m, wire_mm) {
-  const area = Math.PI * Math.pow(wire_mm / 2, 2); // mm²
-  return (0.0175 * length_m) / area; // Ω
+function dcr(length_m, conductor_mm) {
+  const area = Math.PI * Math.pow(conductor_mm / 2, 2);
+  return (0.0175 * length_m) / area;
 }
 
 function calcQ(L_uH, dcr_ohm, freq_kHz) {
@@ -356,48 +467,100 @@ function calcQ(L_uH, dcr_ohm, freq_kHz) {
   return XL / dcr_ohm;
 }
 
-function calc() {
-  const dia = parseFloat(document.getElementById('dia').value);
-  const wire = parseFloat(document.getElementById('wire').value);
-  const freq = parseFloat(document.getElementById('freq').value);
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
 
-  if (mode === 'reverse') {
-    const targetL = parseFloat(document.getElementById('targetL').value);
-    if (!dia || !wire || !targetL) return;
-    const N = solve(dia, wire, targetL);
+function calcCoil() {
+  if (coilMode === 'calibration') {
+    const N = parseFloat(document.getElementById('cal-turns').value);
+    const measuredWidth = parseFloat(document.getElementById('cal-width').value);
+    if (!N || !measuredWidth) return;
+
+    const effective = measuredWidth / N;
+
+    setText('res-effective-dia', `${effective.toFixed(4)} mm`);
+    setText('calc-effective-dia', `${measuredWidth.toFixed(1)} ÷ ${N} = ${effective.toFixed(4)} mm`);
+    setText('next-outer', effective.toFixed(4));
+    return;
+  }
+
+  const dia = parseFloat(document.getElementById('coil-dia').value);
+  const conductor = parseFloat(document.getElementById('coil-conductor').value);
+  const outer = parseFloat(document.getElementById('coil-outer').value);
+  const freq = parseFloat(document.getElementById('coil-freq').value);
+
+  if (!dia || !conductor || !outer || !freq) return;
+
+  if (coilMode === 'reverse') {
+    const targetL = parseFloat(document.getElementById('coil-targetL').value);
+    if (!targetL) return;
+
+    const N = solveTurns(dia, outer, targetL);
     if (!N) return;
+
     const Nint = Math.round(N);
-    const width = (Nint * wire).toFixed(1);
-    const Lcheck = wheeler(dia, Nint, wire).toFixed(0);
+    const width = Nint * outer;
+    const Lcheck = wheeler(dia, Nint, outer);
     const wlen = wireLength(dia, Nint);
-    const resistance = dcr(wlen, wire);
-    const q = calcQ(parseFloat(Lcheck), resistance, freq);
-    document.getElementById('res-turns').innerHTML = `${Nint} <span class="unit-small">turns</span>`;
-    document.getElementById('res-width').innerHTML = `${width} <span class="unit-small">mm</span>`;
-    document.getElementById('res-lcheck').innerHTML = `${Lcheck} <span class="unit-small">μH</span>`;
-    document.getElementById('res-wirelen').innerHTML = `${wlen.toFixed(2)} <span class="unit-small">m</span>`;
-    document.getElementById('res-dcr').innerHTML = `${resistance.toFixed(2)} <span class="unit-small">Ω</span>`;
-    document.getElementById('res-q').textContent = q.toFixed(1);
-    document.getElementById('ms-slw').textContent = Nint;
-    document.getElementById('ms-axis').textContent = width;
-  } else {
-    const N = parseFloat(document.getElementById('turns').value);
-    if (!dia || !wire || !N) return;
-    const L = wheeler(dia, N, wire);
-    const width = (N * wire).toFixed(1);
+    const resistance = dcr(wlen, conductor);
+    const q = calcQ(Lcheck, resistance, freq);
+
+    setText('res-turns', `${Nint} turns`);
+    setText('calc-turns', `Wheeler式をNについて解く → ${N.toFixed(2)} ≒ ${Nint} turns`);
+
+    setText('res-width', `${width.toFixed(1)} mm`);
+    setText('calc-width', `${Nint} × ${outer.toFixed(3)} = ${width.toFixed(1)} mm`);
+
+    setText('res-lcheck', `${Lcheck.toFixed(0)} μH`);
+    setText('calc-lcheck', `L = r²N² / (9r + 10l) = ${Lcheck.toFixed(0)} μH`);
+
+    setText('res-wirelen', `${wlen.toFixed(2)} m`);
+    setText('calc-wirelen', `π × ${dia.toFixed(1)} × ${Nint} ÷ 1000 = ${wlen.toFixed(2)} m`);
+
+    setText('res-dcr', `${resistance.toFixed(2)} Ω`);
+    setText('calc-dcr', `0.0175 × ${wlen.toFixed(2)} ÷ A(φ${conductor.toFixed(2)}) = ${resistance.toFixed(2)} Ω`);
+
+    setText('res-q', q.toFixed(1));
+    setText('calc-q', `2π × ${freq}kHz × ${Lcheck.toFixed(0)}μH ÷ ${resistance.toFixed(2)}Ω = ${q.toFixed(1)}`);
+
+    setText('ms-slw', Nint);
+    setText('ms-axis', width.toFixed(1));
+  }
+
+  if (coilMode === 'forward') {
+    const N = parseFloat(document.getElementById('coil-turns').value);
+    if (!N) return;
+
+    const L = wheeler(dia, N, outer);
+    const width = N * outer;
     const wlen = wireLength(dia, N);
-    const resistance = dcr(wlen, wire);
+    const resistance = dcr(wlen, conductor);
     const q = calcQ(L, resistance, freq);
-    document.getElementById('res-L').innerHTML = `${L.toFixed(1)} <span class="unit-small">μH</span>`;
-    document.getElementById('res-width2').innerHTML = `${width} <span class="unit-small">mm</span>`;
-    document.getElementById('res-mH').innerHTML = `${(L / 1000).toFixed(4)} <span class="unit-small">mH</span>`;
-    document.getElementById('res-wirelen2').innerHTML = `${wlen.toFixed(2)} <span class="unit-small">m</span>`;
-    document.getElementById('res-dcr2').innerHTML = `${resistance.toFixed(2)} <span class="unit-small">Ω</span>`;
-    document.getElementById('res-q2').textContent = q.toFixed(1);
+
+    setText('res-L', `${L.toFixed(1)} μH`);
+    setText('calc-L', `L = r²N² / (9r + 10l) = ${L.toFixed(1)} μH`);
+
+    setText('res-width2', `${width.toFixed(1)} mm`);
+    setText('calc-width2', `${N} × ${outer.toFixed(3)} = ${width.toFixed(1)} mm`);
+
+    setText('res-mH', `${(L / 1000).toFixed(4)} mH`);
+    setText('calc-mH', `${L.toFixed(1)} ÷ 1000 = ${(L / 1000).toFixed(4)} mH`);
+
+    setText('res-wirelen2', `${wlen.toFixed(2)} m`);
+    setText('calc-wirelen2', `π × ${dia.toFixed(1)} × ${N} ÷ 1000 = ${wlen.toFixed(2)} m`);
+
+    setText('res-dcr2', `${resistance.toFixed(2)} Ω`);
+    setText('calc-dcr2', `0.0175 × ${wlen.toFixed(2)} ÷ A(φ${conductor.toFixed(2)}) = ${resistance.toFixed(2)} Ω`);
+
+    setText('res-q2', q.toFixed(1));
+    setText('calc-q2', `2π × ${freq}kHz × ${L.toFixed(1)}μH ÷ ${resistance.toFixed(2)}Ω = ${q.toFixed(1)}`);
+
+    setText('ms-slw2', N);
+    setText('ms-axis2', width.toFixed(1));
   }
 }
 
-calc();
+calcCoil();
 </script>
-</body>
-</html>
