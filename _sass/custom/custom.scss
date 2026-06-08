@@ -17,7 +17,6 @@
     "Hiragino Mincho ProN",
     "MS Mincho",
     serif;
-
   font-weight: 400;
   font-size: 26px;
   line-height: 1.1;
@@ -30,7 +29,14 @@
 }
 
 .logo-top {
-  letter-spacing: -0.05em;   /* 必要なら微調整 */
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  overflow: visible;
+}
+
+.antenna {
+  margin-right: 0.08em;
 }
 
 .site-title {
