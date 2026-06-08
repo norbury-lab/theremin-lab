@@ -17,7 +17,7 @@
     border: 1px solid #eeebee;
     border-radius: 6px;
     padding: 12px 14px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     font-size: 13px;
     color: #5c5962;
   }
@@ -166,26 +166,33 @@
 <div class="coil-tool">
   <div class="formula">Wheeler式：L = r²N² / (9r + 10l)　単層エアコア近似</div>
 
- <div class="flow">
-  <strong>推奨手順</strong><br><br>
+  <div class="flow">
+    <strong>推奨手順</strong><br><br>
 
-  ① L→N（設計）でコイルを設計
-  <br>↓<br>
+    ① L→N（設計）でコイルを設計する
+    <br>↓<br>
 
-  ② 実際に巻線する
-  <br>↓<br>
+    ② 実際に巻線する
+    <br>↓<br>
 
-  ③ 巻線補正で実効外径を求める
-  <br>↓<br>
+    ③ 巻線補正で実効外径を求める
+    <br>↓<br>
 
-  ④ 実効外径を<br>
-  L→N（設計）の「被覆込み外径」へ入力して再設計
-</div>
+    ④ 実効外径を<br>
+    L→N（設計）の「被覆込み外径」へ入力して再設計する
+
+    <br><br>
+
+    <small>
+      ※ 海外資料のAWG表記は「AWG変換」タブで導体径(mm)へ変換できます。
+    </small>
+  </div>
 
   <div class="mode-toggle" role="tablist" aria-label="計算モード">
     <button type="button" class="mode-btn active" onclick="setCoilMode('reverse')">L → N（設計）</button>
     <button type="button" class="mode-btn" onclick="setCoilMode('forward')">N → L（検算）</button>
     <button type="button" class="mode-btn" onclick="setCoilMode('calibration')">巻線補正</button>
+    <button type="button" class="mode-btn" onclick="setCoilMode('awg')">AWG変換</button>
   </div>
 
   <div class="section" id="common-section">
@@ -275,6 +282,20 @@
           <input type="number" id="cal-width" value="81.4" step="0.1" min="0.1" oninput="calcCoil()">
           <span class="unit">mm</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section hidden" id="panel-awg">
+    <div class="section-title">AWG変換</div>
+    <div class="help">
+      海外資料のAWG表記をmmへ変換します。導体径はL→N（設計）の「導体径」に、推奨外径は「被覆込み外径」の初期値として使えます。
+    </div>
+    <div class="field">
+      <label for="awg-input">AWG</label>
+      <div class="field-row">
+        <input type="number" id="awg-input" value="30" step="1" min="0" max="50" oninput="calcCoil()">
+        <span class="unit">AWG</span>
       </div>
     </div>
   </div>
@@ -409,6 +430,31 @@
         として入力してください。
       </div>
     </div>
+
+    <div id="result-awg" class="hidden">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">導体径</span>
+          <span class="result-value highlight" id="res-awg-dia">—</span>
+        </div>
+        <div class="calc-line" id="calc-awg-dia">—</div>
+      </div>
+
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">UEW初期推奨外径</span>
+          <span class="result-value" id="res-awg-outer">—</span>
+        </div>
+        <div class="calc-line" id="calc-awg-outer">導体径 + 0.03〜0.05mm を目安</div>
+      </div>
+
+      <div class="machine-box">
+        L → N（設計）では、<br>
+        導体径 = <strong id="awg-next-conductor">—</strong> mm<br>
+        被覆込み外径 = <strong id="awg-next-outer">—</strong> mm前後<br>
+        を初期値として入力してください。
+      </div>
+    </div>
   </div>
 
   <div class="note">
@@ -430,19 +476,25 @@ function setCoilMode(m) {
       'active',
       (i === 0 && m === 'reverse') ||
       (i === 1 && m === 'forward') ||
-      (i === 2 && m === 'calibration')
+      (i === 2 && m === 'calibration') ||
+      (i === 3 && m === 'awg')
     );
   });
 
-  document.getElementById('common-section').classList.toggle('hidden', m === 'calibration');
+  document.getElementById('common-section').classList.toggle(
+    'hidden',
+    m === 'calibration' || m === 'awg'
+  );
 
   document.getElementById('panel-reverse').classList.toggle('hidden', m !== 'reverse');
   document.getElementById('panel-forward').classList.toggle('hidden', m !== 'forward');
   document.getElementById('panel-calibration').classList.toggle('hidden', m !== 'calibration');
+  document.getElementById('panel-awg').classList.toggle('hidden', m !== 'awg');
 
   document.getElementById('result-reverse').classList.toggle('hidden', m !== 'reverse');
   document.getElementById('result-forward').classList.toggle('hidden', m !== 'forward');
   document.getElementById('result-calibration').classList.toggle('hidden', m !== 'calibration');
+  document.getElementById('result-awg').classList.toggle('hidden', m !== 'awg');
 
   calcCoil();
 }
@@ -479,12 +531,37 @@ function calcQ(L_uH, dcr_ohm, freq_kHz) {
   return XL / dcr_ohm;
 }
 
+function awgToMm(awg) {
+  return 0.127 * Math.pow(92, (36 - awg) / 39);
+}
+
 function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
 }
 
 function calcCoil() {
+  if (coilMode === 'awg') {
+    const awg = parseFloat(document.getElementById('awg-input').value);
+    if (isNaN(awg)) return;
+
+    const dia = awgToMm(awg);
+    const outerMin = dia + 0.03;
+    const outerMax = dia + 0.05;
+    const outerMid = dia + 0.04;
+
+    setText('res-awg-dia', `${dia.toFixed(3)} mm`);
+    setText('calc-awg-dia', `d = 0.127 × 92^((36 - ${awg}) / 39) = ${dia.toFixed(3)} mm`);
+
+    setText('res-awg-outer', `${outerMin.toFixed(3)}〜${outerMax.toFixed(3)} mm`);
+    setText('calc-awg-outer', `${dia.toFixed(3)} + 0.03〜0.05 = ${outerMin.toFixed(3)}〜${outerMax.toFixed(3)} mm`);
+
+    setText('awg-next-conductor', dia.toFixed(3));
+    setText('awg-next-outer', outerMid.toFixed(3));
+
+    return;
+  }
+
   if (coilMode === 'calibration') {
     const N = parseFloat(document.getElementById('cal-turns').value);
     const measuredWidth = parseFloat(document.getElementById('cal-width').value);
@@ -495,6 +572,7 @@ function calcCoil() {
     setText('res-effective-dia', `${effective.toFixed(4)} mm`);
     setText('calc-effective-dia', `${measuredWidth.toFixed(1)} ÷ ${N} = ${effective.toFixed(4)} mm`);
     setText('next-outer', effective.toFixed(4));
+
     return;
   }
 
