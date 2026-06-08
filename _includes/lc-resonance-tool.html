@@ -1,0 +1,437 @@
+<style>
+  .lc-tool * { box-sizing: border-box; }
+  .lc-tool {
+    max-width: 680px;
+    color: #27262b;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .lc-tool .formula {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 16px;
+    font-family: monospace;
+  }
+  .lc-tool .mode-toggle {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #eeebee;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lc-tool .mode-btn {
+    flex: 1;
+    padding: 8px 4px;
+    border: none;
+    cursor: pointer;
+    background: #f5f6fa;
+    color: #777;
+    font-size: 13px;
+  }
+  .lc-tool .mode-btn.active {
+    background: #7253ed;
+    color: #fff;
+    font-weight: 600;
+  }
+  .lc-tool .section,
+  .lc-tool .result-section {
+    background: #f5f6fa;
+    border: 1px solid #eeebee;
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .lc-tool .result-section {
+    background: #fff;
+    border: 2px solid #7253ed;
+  }
+  .lc-tool .section-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #777;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .lc-tool .help {
+    font-size: 13px;
+    color: #5c5962;
+    margin-bottom: 14px;
+  }
+  .lc-tool .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .lc-tool .field label {
+    display: block;
+    font-size: 13px;
+    color: #5c5962;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .lc-tool .field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lc-tool input {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #27262b;
+    padding: 7px 10px;
+    font-size: 16px;
+    font-family: monospace;
+    width: 120px;
+  }
+  .lc-tool input:focus {
+    outline: 2px solid #7253ed;
+    outline-offset: 1px;
+  }
+  .lc-tool .unit,
+  .lc-tool .unit-small {
+    color: #777;
+    font-size: 12px;
+  }
+  .lc-tool .result-row {
+    padding: 10px 0;
+    border-bottom: 1px solid #eeebee;
+  }
+  .lc-tool .result-row:last-child { border-bottom: none; }
+  .lc-tool .result-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .lc-tool .result-label {
+    font-size: 13px;
+    color: #5c5962;
+  }
+  .lc-tool .result-value {
+    font-size: 16px;
+    font-family: monospace;
+    color: #27262b;
+    text-align: right;
+  }
+  .lc-tool .result-value.highlight {
+    font-size: 22px;
+    color: #7253ed;
+    font-weight: 700;
+  }
+  .lc-tool .calc-line {
+    margin-top: 3px;
+    font-size: 12px;
+    color: #777;
+    font-family: monospace;
+  }
+  .lc-tool .note {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.8;
+    margin-top: 8px;
+  }
+  .lc-tool .hidden { display: none; }
+
+  @media (max-width: 560px) {
+    .lc-tool .input-grid { grid-template-columns: 1fr; }
+    .lc-tool .mode-toggle { flex-direction: column; }
+    .lc-tool input { width: 100%; }
+    .lc-tool .field-row { align-items: stretch; }
+  }
+</style>
+
+<div class="lc-tool">
+  <div class="formula">LC共振式：f = 1 / (2π√LC)</div>
+
+  <div class="mode-toggle" role="tablist" aria-label="計算モード">
+    <button type="button" class="mode-btn active" onclick="setLcMode('freq')">L + C → 周波数</button>
+    <button type="button" class="mode-btn" onclick="setLcMode('cap')">L + f → 必要C</button>
+    <button type="button" class="mode-btn" onclick="setLcMode('ind')">C + f → 必要L</button>
+    <button type="button" class="mode-btn" onclick="setLcMode('range')">C範囲 → 周波数範囲</button>
+  </div>
+
+  <div class="section" id="panel-freq">
+    <div class="section-title">L + C → 周波数</div>
+    <div class="help">
+      インダクタンスと容量から共振周波数を求めます。
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label for="lc-l1">インダクタンス L</label>
+        <div class="field-row">
+          <input type="number" id="lc-l1" value="1000" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">μH</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lc-c1">容量 C</label>
+        <div class="field-row">
+          <input type="number" id="lc-c1" value="100" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">pF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section hidden" id="panel-cap">
+    <div class="section-title">L + f → 必要C</div>
+    <div class="help">
+      コイル値と目標周波数から、必要な容量を逆算します。
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label for="lc-l2">インダクタンス L</label>
+        <div class="field-row">
+          <input type="number" id="lc-l2" value="1000" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">μH</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lc-f2">目標周波数 f</label>
+        <div class="field-row">
+          <input type="number" id="lc-f2" value="500" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">kHz</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section hidden" id="panel-ind">
+    <div class="section-title">C + f → 必要L</div>
+    <div class="help">
+      容量と目標周波数から、必要なインダクタンスを逆算します。
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label for="lc-c3">容量 C</label>
+        <div class="field-row">
+          <input type="number" id="lc-c3" value="100" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">pF</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lc-f3">目標周波数 f</label>
+        <div class="field-row">
+          <input type="number" id="lc-f3" value="500" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">kHz</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section hidden" id="panel-range">
+    <div class="section-title">C範囲 → 周波数範囲</div>
+    <div class="help">
+      バリコンや手容量変化のように、容量範囲から発振周波数範囲を求めます。
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label for="lc-l4">インダクタンス L</label>
+        <div class="field-row">
+          <input type="number" id="lc-l4" value="1000" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">μH</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lc-cmin">最小容量 Cmin</label>
+        <div class="field-row">
+          <input type="number" id="lc-cmin" value="50" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">pF</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lc-cmax">最大容量 Cmax</label>
+        <div class="field-row">
+          <input type="number" id="lc-cmax" value="450" step="1" min="0.001" oninput="calcLc()">
+          <span class="unit">pF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <div class="section-title">計算結果</div>
+
+    <div id="result-freq">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">共振周波数</span>
+          <span class="result-value highlight" id="res-freq">—</span>
+        </div>
+        <div class="calc-line" id="calc-freq">—</div>
+      </div>
+    </div>
+
+    <div id="result-cap" class="hidden">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">必要容量</span>
+          <span class="result-value highlight" id="res-cap">—</span>
+        </div>
+        <div class="calc-line" id="calc-cap">—</div>
+      </div>
+    </div>
+
+    <div id="result-ind" class="hidden">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">必要インダクタンス</span>
+          <span class="result-value highlight" id="res-ind">—</span>
+        </div>
+        <div class="calc-line" id="calc-ind">—</div>
+      </div>
+    </div>
+
+    <div id="result-range" class="hidden">
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">最高周波数</span>
+          <span class="result-value highlight" id="res-fmax">—</span>
+        </div>
+        <div class="calc-line" id="calc-fmax">—</div>
+      </div>
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">最低周波数</span>
+          <span class="result-value highlight" id="res-fmin">—</span>
+        </div>
+        <div class="calc-line" id="calc-fmin">—</div>
+      </div>
+      <div class="result-row">
+        <div class="result-top">
+          <span class="result-label">周波数範囲</span>
+          <span class="result-value" id="res-frange">—</span>
+        </div>
+        <div class="calc-line" id="calc-frange">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    ※ LはμH、CはpF、fはkHzで入力します。<br>
+    ※ 計算は理想的なLC共振回路の値です。実際のテルミン回路では、配線容量・アンテナ容量・真空管/トランジスタ/ICの入力容量・周辺金属などにより実測値が変わります。<br>
+    ※ バリコンやアンテナ容量を扱う場合は、寄生容量を含めた総容量として考えてください。
+  </div>
+</div>
+
+<script>
+let lcMode = 'freq';
+
+function setLcMode(m) {
+  lcMode = m;
+
+  document.querySelectorAll('.lc-tool .mode-btn').forEach((b, i) => {
+    b.classList.toggle(
+      'active',
+      (i === 0 && m === 'freq') ||
+      (i === 1 && m === 'cap') ||
+      (i === 2 && m === 'ind') ||
+      (i === 3 && m === 'range')
+    );
+  });
+
+  document.getElementById('panel-freq').classList.toggle('hidden', m !== 'freq');
+  document.getElementById('panel-cap').classList.toggle('hidden', m !== 'cap');
+  document.getElementById('panel-ind').classList.toggle('hidden', m !== 'ind');
+  document.getElementById('panel-range').classList.toggle('hidden', m !== 'range');
+
+  document.getElementById('result-freq').classList.toggle('hidden', m !== 'freq');
+  document.getElementById('result-cap').classList.toggle('hidden', m !== 'cap');
+  document.getElementById('result-ind').classList.toggle('hidden', m !== 'ind');
+  document.getElementById('result-range').classList.toggle('hidden', m !== 'range');
+
+  calcLc();
+}
+
+function setLcText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function resonanceFreqKHz(L_uH, C_pF) {
+  const L = L_uH * 1e-6;
+  const C = C_pF * 1e-12;
+  const f = 1 / (2 * Math.PI * Math.sqrt(L * C));
+  return f / 1000;
+}
+
+function requiredCapPF(L_uH, f_kHz) {
+  const L = L_uH * 1e-6;
+  const f = f_kHz * 1000;
+  const C = 1 / (Math.pow(2 * Math.PI * f, 2) * L);
+  return C * 1e12;
+}
+
+function requiredIndUH(C_pF, f_kHz) {
+  const C = C_pF * 1e-12;
+  const f = f_kHz * 1000;
+  const L = 1 / (Math.pow(2 * Math.PI * f, 2) * C);
+  return L * 1e6;
+}
+
+function fmtFreq(kHz) {
+  if (kHz >= 1000) {
+    return `${(kHz / 1000).toFixed(3)} MHz`;
+  }
+  return `${kHz.toFixed(1)} kHz`;
+}
+
+function calcLc() {
+  if (lcMode === 'freq') {
+    const L = parseFloat(document.getElementById('lc-l1').value);
+    const C = parseFloat(document.getElementById('lc-c1').value);
+    if (!L || !C) return;
+
+    const f = resonanceFreqKHz(L, C);
+
+    setLcText('res-freq', fmtFreq(f));
+    setLcText('calc-freq', `f = 1 / (2π√(${L}μH × ${C}pF)) = ${fmtFreq(f)}`);
+  }
+
+  if (lcMode === 'cap') {
+    const L = parseFloat(document.getElementById('lc-l2').value);
+    const f = parseFloat(document.getElementById('lc-f2').value);
+    if (!L || !f) return;
+
+    const C = requiredCapPF(L, f);
+
+    setLcText('res-cap', `${C.toFixed(2)} pF`);
+    setLcText('calc-cap', `C = 1 / ((2π × ${f}kHz)² × ${L}μH) = ${C.toFixed(2)} pF`);
+  }
+
+  if (lcMode === 'ind') {
+    const C = parseFloat(document.getElementById('lc-c3').value);
+    const f = parseFloat(document.getElementById('lc-f3').value);
+    if (!C || !f) return;
+
+    const L = requiredIndUH(C, f);
+
+    setLcText('res-ind', `${L.toFixed(2)} μH`);
+    setLcText('calc-ind', `L = 1 / ((2π × ${f}kHz)² × ${C}pF) = ${L.toFixed(2)} μH`);
+  }
+
+  if (lcMode === 'range') {
+    const L = parseFloat(document.getElementById('lc-l4').value);
+    const cmin = parseFloat(document.getElementById('lc-cmin').value);
+    const cmax = parseFloat(document.getElementById('lc-cmax').value);
+    if (!L || !cmin || !cmax) return;
+
+    const fMax = resonanceFreqKHz(L, cmin);
+    const fMin = resonanceFreqKHz(L, cmax);
+    const range = fMax - fMin;
+
+    setLcText('res-fmax', fmtFreq(fMax));
+    setLcText('calc-fmax', `Cmin ${cmin}pF → ${fmtFreq(fMax)}`);
+
+    setLcText('res-fmin', fmtFreq(fMin));
+    setLcText('calc-fmin', `Cmax ${cmax}pF → ${fmtFreq(fMin)}`);
+
+    setLcText('res-frange', `${range.toFixed(1)} kHz`);
+    setLcText('calc-frange', `${fmtFreq(fMax)} - ${fmtFreq(fMin)} = ${range.toFixed(1)} kHz`);
+  }
+}
+
+calcLc();
+</script>
