@@ -1,18 +1,25 @@
+.theremin-logo-wrap {
+  width: 9em;
+  aspect-ratio: 1 / 1;
+
+  border: 1px solid #777;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 1.5rem auto;
+}
+
 .theremin-logo {
-  font-family: monospace;
   font-size: 1.7rem;
   line-height: 1.1;
   font-weight: 700;
-
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-
-  margin-left: -2rem;   /* ← 全体位置 */
 }
 
 .theremin-logo-text {
   width: 6em;
-  text-align: right;    /* ← 右揃え */
+  text-align: right;
 }
 
 figure {
