@@ -17,14 +17,14 @@
   line-height: 1.1;
 }
 
-.theremin-logo-line{
-    width: 4em;
-    text-align: right;
+.theremin-logo-text {
+  width: 3em;
+  text-align: right;
+  white-space: nowrap;
 }
 
-.theremin-logo-text {
-  width: 3em;        /* んらぼ = 全角3文字 */
-  text-align: right;
+.logo-top {
+  text-indent: -2em;   /* アンテナだけ左へ逃がす */
 }
 
 .site-title {
