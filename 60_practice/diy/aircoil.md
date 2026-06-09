@@ -5,3 +5,5 @@ parent: DIY
 grand_parent: 実践
 nav_order: 10
 ---
+
+# テルミンのエアコアコイルを自作する

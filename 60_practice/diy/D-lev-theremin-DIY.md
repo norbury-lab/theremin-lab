@@ -1,8 +1,9 @@
 ---
 title: D-levテルミンの自作
 layout: default
-parent: 研究ノート
-nav_order: 20
+parent: DIY
+grand_parent: 実践
+nav_order: 30
 date: 2026-05-12
 ---
 # D-levテルミンを自作する
