@@ -8,7 +8,7 @@ nav_order: 10
 
 # ガレーエフ『ソビエトのファウスト』を読む
 
-<figure>
+<figure style="text-align:center;">
   <img src="/theremin-lab/assets/images/soviet-faust-cover.png" alt="ソビエトのファウスト 表紙" style="max-width:280px; height:auto;">
   <figcaption>ブラト・ガレーエフ『ソビエトのファウスト』カザン、1995年</figcaption>
 </figure>
