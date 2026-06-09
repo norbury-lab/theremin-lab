@@ -12,7 +12,7 @@ nav_order: 9960
 
 ---
 
-<img src="../assets/images/warehouse_of_the_world.jpg" alt="世界の倉庫" style="max-width:100%; height:auto; margin-bottom:1rem;">
+<img src="/theremin-lab/assets/images/warehouse_of_the_world.jpg" alt="世界の倉庫" style="max-width:100%; height:auto; margin-bottom:1rem;">
 
 
 テルミンを自作していると、否応なく中国と向き合うことになる。
