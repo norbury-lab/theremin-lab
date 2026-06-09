@@ -1,7 +1,8 @@
 ---
 title: リンク集
 layout: default
-nav_order: 110
+parent: リソース
+nav_order: 20
 ---
 
 # リンク集
