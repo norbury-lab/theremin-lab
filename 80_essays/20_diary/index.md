@@ -1,9 +1,9 @@
 ---
 title: 日記
 layout: default
-nav_order: 90
+parent: 読み物
+nav_order: 10
 has_children: true
-nav_fold: true
 ---
 
 # 日記

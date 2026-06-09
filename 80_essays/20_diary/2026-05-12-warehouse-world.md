@@ -2,6 +2,7 @@
 title: 世界の倉庫(2026/5/12)
 layout: default
 parent: 日記
+grand_parent: 読み物
 nav_order: 9960
 ---
 

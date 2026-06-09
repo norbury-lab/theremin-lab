@@ -2,6 +2,7 @@
 title: PSEとテルミンのアース問題(2026/3/30)
 layout: default
 parent: 日記
+grand_parent: 読み物
 nav_order: 9990
 ---
 # Etherwaveのアダプターが変わっていた——PSEとテルミンのアース問題

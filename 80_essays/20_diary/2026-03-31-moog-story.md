@@ -2,6 +2,7 @@
 title: Moogが買収された話(2026/3/31)
 layout: default
 parent: 日記
+grand_parent: 読み物
 nav_order: 9980
 ---
 <!-- 

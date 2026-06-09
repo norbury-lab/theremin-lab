@@ -1,11 +1,10 @@
 ---
-title: 研究ノート
+title: 読み物
 layout: default
-nav_order: 85
+nav_order: 80
 has_children: true
-nav_fold: true
 ---
 
-# 研究ノート
+# 読み物
 
-テルミン、電子工作、資料解析、などに関する考察と記録。
+論考・書評・日記

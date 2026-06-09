@@ -1,6 +1,8 @@
 ---
-title: ファウストの比喩が正確だった——ガレーエフ『ソビエトのファウスト』を読む
+title: ガレーエフ『ソビエトのファウスト』を読む
 layout: default
+parent: 論考・書評
+grand_parent: 読み物
 nav_order: 10
 ---
 
