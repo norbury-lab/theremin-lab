@@ -1,9 +1,10 @@
 ---
-title: DIY
+title: 実践
 layout: default
-nav_order: 70
+nav_order: 60
+has_children: true
 ---
 
-# DIY
+# 実践
 
-DIY記録・回路図・改造に関するページです。
+DIY記録・研究に関するページです。
