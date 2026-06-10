@@ -91,3 +91,11 @@ figcaption {
 sup a[href^="#fn:"] {
   font-size: 0.85rem;
 }
+
+@media (max-width: 600px) {
+  figure[style*="float:right"] {
+    float: none;
+    text-align: center;
+    margin: 0 auto 1rem;
+  }
+}
