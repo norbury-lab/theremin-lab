@@ -16,15 +16,15 @@ Page, Philip. "Making Music From the Air — Professor Theremin Explains His Exp
 
 ---
 
-<figure style="float:right; margin: 0 0 1rem 1.5rem;">
-  <img src="/theremin-lab/assets/images/evening-standard-19270930.png" alt="イブニング・スタンダード 1927年9月30日" style="max-width:220px; height:auto;">
-  <figcaption style="font-size:0.8rem; text-align:center;">Evening Standard, September 30, 1927</figcaption>
-</figure>
-
 {: .note }
 > 前日（9月29日）の記事「空気から生まれた音楽」の続報。テルメン教授本人からの技術的説明と、アインシュタインのコメントを中心に構成されている。アインシュタインがヨルク・マーガーの「スフェロフォン」との違いを指摘した記録として、テルメンヴォクスの独自性を示す一次資料である。
 
 ---
+
+<figure style="float:right; margin: 0 0 1rem 1.5rem;">
+  <img src="/theremin-lab/assets/images/evening-standard-19270930.png" alt="イブニング・スタンダード 1927年9月30日" style="max-width:220px; height:auto;">
+  <figcaption style="font-size:0.8rem; text-align:center;">Evening Standard, September 30, 1927</figcaption>
+</figure>
 
 ## 「空気から音楽を作る」（1927年）
 
