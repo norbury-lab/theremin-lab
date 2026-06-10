@@ -16,15 +16,15 @@ Schonberg, Harold C. "Music: Leon Theremin — Inventor of Instrument Bearing Hi
 
 ---
 
-<figure style="float:right; margin: 0 0 1rem 1.5rem;">
-  <img src="/theremin-lab/assets/images/NYtimes19670426.jpg" alt="ニューヨーク・タイムズ 1967年4月26日" style="max-width:220px; height:auto;">
-  <figcaption style="font-size:0.8rem; text-align:center;">The New York Times, April 26, 1967</figcaption>
-</figure>
-
 {: .note }
 > 1938年にアメリカから突然姿を消して以来、約29年間生死不明だったレオン・テルメン。1967年4月、ハロルド・ショーンバーグがモスクワで取材に成功し、ニューヨーク・タイムズに記事を掲載した。テルミンを知る読者にとっては、死んだとも思っていた人物が突然現れたに等しい驚きだっただろう。記事の冒頭「レオン・テルミンのことを覚えているだろうか」という書き出しがその距離感を象徴している。同じ1967年、ソビエト側ではガレーエフがカザンでテルメンと初めて面会。東西で同時に「テルメン再発見」が起きた年である。
 
 ---
+
+<figure style="float:right; margin: 0 0 1rem 1.5rem;">
+  <img src="/theremin-lab/assets/images/NYtimes19670426.jpg" alt="ニューヨーク・タイムズ 1967年4月26日" style="max-width:220px; height:auto;">
+  <figcaption style="font-size:0.8rem; text-align:center;">The New York Times, April 26, 1967</figcaption>
+</figure>
 
 ## 「音楽：レオン・テルミン」（1967年）
 
